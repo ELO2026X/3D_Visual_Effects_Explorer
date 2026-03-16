@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { ContentView } from './components/ContentView';
 import { effectCategories, DEFAULT_MODEL_URL } from './constants';
@@ -11,6 +11,7 @@ function App() {
   const [effectData, setEffectData] = useState<EffectData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const cache = useRef<Map<string, string>>(new Map());
 
   useEffect(() => {
     // Set initial selected effect to the first effect in the first category
@@ -20,10 +21,16 @@ function App() {
   }, []);
 
   const fetchEffectData = useCallback(async (effectName: string) => {
-    setIsLoading(true);
     setError(null);
+    if (cache.current.has(effectName)) {
+      setEffectData({ name: effectName, description: cache.current.get(effectName)! });
+      return;
+    }
+
+    setIsLoading(true);
     try {
       const description = await generateEffectDescription(effectName);
+      cache.current.set(effectName, description);
       setEffectData({ name: effectName, description });
     } catch (err) {
       console.error("Error fetching effect description:", err);
