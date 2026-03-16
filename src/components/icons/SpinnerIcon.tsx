@@ -1,8 +1,6 @@
 import React from 'react';
 
-interface SpinnerIconProps extends React.SVGProps<SVGSVGElement> {}
-
-export const SpinnerIcon: React.FC<SpinnerIconProps> = (props) => (
+export const SpinnerIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"

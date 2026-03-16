@@ -3,7 +3,7 @@ import { Sidebar } from './components/Sidebar';
 import { ContentView } from './components/ContentView';
 import { effectCategories, DEFAULT_MODEL_URL } from './constants';
 import { generateEffectDescription } from './services/geminiService';
-import { EffectData, EffectCategory } from '@/types';
+import { EffectData } from './types';
 
 function App() {
   const [selectedEffect, setSelectedEffect] = useState<string | null>(null);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { EffectCategory } from '@/types';
+import { EffectCategory } from '../types';
 
 interface SidebarProps {
   effectCategories: EffectCategory[];

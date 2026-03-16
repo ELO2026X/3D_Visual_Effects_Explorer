@@ -30,6 +30,7 @@ const JellyMaterial = shaderMaterial(
 extend({ JellyMaterial });
 
 export const applyJellyShader = (model: THREE.Object3D) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const material = new (JellyMaterial as any)();
   model.traverse((child) => {
     if (child instanceof THREE.Mesh) {

@@ -16,6 +16,14 @@ export const effectCategories: EffectCategory[] = [
       { name: 'Bloom', description: 'Adds a glow effect to bright areas.' },
     ],
   },
+  {
+    name: 'Rosebud AI',
+    effects: [
+      { name: 'Rosie (Vibe Coding)', description: 'Simulates LLM-to-code vibe coding by applying a digital matrix look.' },
+      { name: 'Marble (Spatial Intelligence)', description: 'Simulates Gaussian splatting by converting the model into point clouds.' },
+      { name: 'Asset Models (PixelVibe)', description: 'Simulates 2D asset generation by applying a stylized pixelated flat shading.' },
+    ],
+  },
 ];
 
 export const DEFAULT_MODEL_URL = '/a_cute_little_gummy_b_0806032807_texture.glb';
