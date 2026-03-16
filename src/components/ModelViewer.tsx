@@ -3,6 +3,9 @@ import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { applyCelShader } from '../components/shaders/CelShader';
 import { applyJellyShader } from '../components/shaders/JellyShader';
+import { applyRosieShader } from '../components/shaders/RosieShader';
+import { applyMarbleShader } from '../components/shaders/MarbleShader';
+import { applyAssetModelsShader } from '../components/shaders/AssetModelsShader';
 
 interface ModelViewerProps {
   modelPath: string;
@@ -39,17 +42,18 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
       modelRef.current.traverse((child) => {
         if (child instanceof THREE.Mesh && originalMaterials.has(child.uuid)) {
           child.material = originalMaterials.get(child.uuid)!;
+          child.visible = true; // Make sure the mesh is visible again
         }
       });
 
-      // Remove previous outlines
-      const outlines: THREE.Object3D[] = [];
+      // Remove previous outlines and points
+      const toRemove: THREE.Object3D[] = [];
       modelRef.current.traverse((child) => {
-        if (child.name === 'outline') {
-          outlines.push(child);
+        if (child.name === 'outline' || child.name === 'marble-points') {
+          toRemove.push(child);
         }
       });
-      outlines.forEach((outline) => outline.parent?.remove(outline));
+      toRemove.forEach((obj) => obj.parent?.remove(obj));
 
       switch (effectName) {
         case 'Cel Shading':
@@ -57,6 +61,15 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
           break;
         case 'Jelly Effect':
           cleanupRef.current = applyJellyShader(modelRef.current);
+          break;
+        case 'Rosie (Vibe Coding)':
+          applyRosieShader(modelRef.current);
+          break;
+        case 'Marble (Spatial Intelligence)':
+          applyMarbleShader(modelRef.current);
+          break;
+        case 'Asset Models (PixelVibe)':
+          applyAssetModelsShader(modelRef.current);
           break;
         // Add more cases for other effects
         default:

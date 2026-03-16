@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stage } from '@react-three/drei';
 import { ModelViewer } from './ModelViewer';
-import { EffectData } from '@/types';
+import { EffectData } from '../types';
 import { SpinnerIcon } from './icons/SpinnerIcon';
 
 interface ContentViewProps {
