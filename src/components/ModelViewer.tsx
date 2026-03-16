@@ -57,7 +57,7 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
 
       switch (effectName) {
         case 'Cel Shading':
-          applyCelShader(modelRef.current);
+          cleanupRef.current = applyCelShader(modelRef.current);
           break;
         case 'Jelly Effect':
           cleanupRef.current = applyJellyShader(modelRef.current);
