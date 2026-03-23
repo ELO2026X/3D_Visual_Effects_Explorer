@@ -21,8 +21,21 @@ const genAI = (API_KEY && API_KEY !== "INSERT API KEY") ? new GoogleGenerativeAI
 app.post('/api/generate-effect-description', async (req, res) => {
   try {
     const { effectName } = req.body;
+
     if (!effectName) {
       return res.status(400).send('effectName is required');
+    }
+
+    if (typeof effectName !== 'string') {
+      return res.status(400).send('effectName must be a string');
+    }
+
+    if (effectName.length > 50) {
+      return res.status(400).send('effectName must be at most 50 characters');
+    }
+
+    if (!/^[a-zA-Z0-9\s-]+$/.test(effectName)) {
+      return res.status(400).send('effectName contains invalid characters');
     }
 
     if (!genAI) {
