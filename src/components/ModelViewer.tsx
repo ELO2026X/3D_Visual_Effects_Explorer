@@ -6,6 +6,9 @@ import { applyJellyShader } from '../components/shaders/JellyShader';
 import { applyRosieShader } from '../components/shaders/RosieShader';
 import { applyMarbleShader } from '../components/shaders/MarbleShader';
 import { applyAssetModelsShader } from '../components/shaders/AssetModelsShader';
+import { applyOutlineShader } from '../components/shaders/OutlineShader';
+import { applyBloomShader } from '../components/shaders/BloomShader';
+import { applyChromaticAberrationShader } from '../components/shaders/ChromaticAberrationShader';
 
 interface ModelViewerProps {
   modelPath: string;
@@ -63,13 +66,22 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
           cleanupRef.current = applyJellyShader(modelRef.current);
           break;
         case 'Rosie (Vibe Coding)':
-          applyRosieShader(modelRef.current);
+          cleanupRef.current = applyRosieShader(modelRef.current);
           break;
         case 'Marble (Spatial Intelligence)':
-          applyMarbleShader(modelRef.current);
+          cleanupRef.current = applyMarbleShader(modelRef.current);
           break;
         case 'Asset Models (PixelVibe)':
-          applyAssetModelsShader(modelRef.current);
+          cleanupRef.current = applyAssetModelsShader(modelRef.current);
+          break;
+        case 'Outline':
+          cleanupRef.current = applyOutlineShader(modelRef.current);
+          break;
+        case 'Bloom':
+          cleanupRef.current = applyBloomShader(modelRef.current);
+          break;
+        case 'Chromatic Aberration':
+          cleanupRef.current = applyChromaticAberrationShader(modelRef.current);
           break;
         // Add more cases for other effects
         default:
