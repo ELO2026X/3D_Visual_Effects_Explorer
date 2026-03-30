@@ -69,7 +69,7 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
           applyMarbleShader(modelRef.current);
           break;
         case 'Asset Models (PixelVibe)':
-          applyAssetModelsShader(modelRef.current);
+          cleanupRef.current = applyAssetModelsShader(modelRef.current);
           break;
         // Add more cases for other effects
         default:

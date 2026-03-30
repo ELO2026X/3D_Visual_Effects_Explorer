@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 
 export const applyAssetModelsShader = (model: THREE.Object3D) => {
+  const materialCache = new Map<number, THREE.MeshStandardMaterial>();
+
   model.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       let color = new THREE.Color(0xffffff);
@@ -8,11 +10,26 @@ export const applyAssetModelsShader = (model: THREE.Object3D) => {
         color = child.material.color;
       }
 
-      child.material = new THREE.MeshStandardMaterial({
-        color: color,
-        flatShading: true,
-        roughness: 1.0,
-      });
+      const colorHex = color.getHex();
+      let cachedMaterial = materialCache.get(colorHex);
+
+      if (!cachedMaterial) {
+        cachedMaterial = new THREE.MeshStandardMaterial({
+          color: color,
+          flatShading: true,
+          roughness: 1.0,
+        });
+        materialCache.set(colorHex, cachedMaterial);
+      }
+
+      child.material = cachedMaterial;
     }
   });
+
+  return () => {
+    materialCache.forEach((material) => {
+      material.dispose();
+    });
+    materialCache.clear();
+  };
 };
