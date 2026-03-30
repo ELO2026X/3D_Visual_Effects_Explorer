@@ -2,6 +2,11 @@ import * as THREE from 'three';
 
 export const applyMarbleShader = (model: THREE.Object3D) => {
   const pointsObjects: THREE.Points[] = [];
+  const material = new THREE.PointsMaterial({
+    color: 0x88ccff,
+    size: 0.05,
+    sizeAttenuation: true,
+  });
 
   model.traverse((child) => {
     if (child instanceof THREE.Mesh) {
@@ -10,11 +15,6 @@ export const applyMarbleShader = (model: THREE.Object3D) => {
 
       // Create points based on the mesh geometry
       const geometry = child.geometry;
-      const material = new THREE.PointsMaterial({
-        color: 0x88ccff,
-        size: 0.05,
-        sizeAttenuation: true,
-      });
 
       const points = new THREE.Points(geometry, material);
       points.position.copy(child.position);
