@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 const port = 3001;
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 
 const API_KEY = process.env.VITE_GEMINI_API_KEY;
