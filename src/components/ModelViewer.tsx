@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useMemo, useState } from 'react';
-import { useGLTF } from '@react-three/drei';
+import { useGLTF, Splat } from '@react-three/drei';
 import * as THREE from 'three';
 import { applyCelShader } from '../components/shaders/CelShader';
 import { applyJellyShader } from '../components/shaders/JellyShader';
@@ -9,6 +9,7 @@ import { applyAssetModelsShader } from '../components/shaders/AssetModelsShader'
 import { applyOutlineShader } from '../components/shaders/OutlineShader';
 import { applyBloomShader } from '../components/shaders/BloomShader';
 import { applyChromaticAberrationShader } from '../components/shaders/ChromaticAberrationShader';
+import { applyEnhancedDetailShader } from '../components/shaders/EnhancedDetailShader';
 
 interface ModelViewerProps {
   modelPath: string;
@@ -16,14 +17,20 @@ interface ModelViewerProps {
 }
 
 export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName }) => {
-  const { scene } = useGLTF(modelPath);
+  const isSplat = modelPath.toLowerCase().endsWith('.splat') || modelPath.toLowerCase().endsWith('.ksplat');
+  
+  // Conditionally load GLTF only if not a splat
+  const gltf = useGLTF(isSplat ? '' : modelPath, true);
+  const scene = gltf ? gltf.scene : null;
+  
   const modelRef = useRef<THREE.Group>(null);
   const [originalMaterials, setOriginalMaterials] = useState<Map<string, THREE.Material>>(new Map());
   const cleanupRef = useRef<(() => void) | null>(null);
 
-  const memoizedScene = useMemo(() => scene.clone(), [scene]);
+  const memoizedScene = useMemo(() => scene ? scene.clone() : null, [scene]);
 
   useEffect(() => {
+    if (!memoizedScene) return;
     const materials = new Map<string, THREE.Material>();
     memoizedScene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
@@ -34,7 +41,7 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
   }, [memoizedScene]);
 
   useEffect(() => {
-    if (modelRef.current) {
+    if (modelRef.current && memoizedScene) {
       // Cleanup previous effect
       if (cleanupRef.current) {
         cleanupRef.current();
@@ -79,6 +86,9 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
         case 'Chromatic Aberration':
           cleanupRef.current = applyChromaticAberrationShader(modelRef.current);
           break;
+        case 'Enhanced Detail':
+          cleanupRef.current = applyEnhancedDetailShader(modelRef.current);
+          break;
         // Add more cases for other effects
         default:
           // No specific effect, use default materials
@@ -94,5 +104,9 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
     };
   }, [effectName, memoizedScene, originalMaterials]);
 
-  return <primitive object={memoizedScene} ref={modelRef} />;
+  if (isSplat) {
+    return <Splat src={modelPath} />;
+  }
+
+  return memoizedScene ? <primitive object={memoizedScene} ref={modelRef} /> : null;
 };

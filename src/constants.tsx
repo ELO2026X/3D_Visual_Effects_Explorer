@@ -22,6 +22,8 @@ export const effectCategories: EffectCategory[] = [
       { name: 'Rosie (Vibe Coding)', description: 'Simulates LLM-to-code vibe coding by applying a digital matrix look.' },
       { name: 'Marble (Spatial Intelligence)', description: 'Simulates Gaussian splatting by converting the model into point clouds.' },
       { name: 'Asset Models (PixelVibe)', description: 'Simulates 2D asset generation by applying a stylized pixelated flat shading.' },
+      { name: 'Enhanced Detail', description: 'Enhances 3D mesh with procedural detailing and dynamic painting.' },
+      { name: 'Gaussian Splat', description: 'Renders high-fidelity 3D captures using Gaussian Splatting.' },
     ],
   },
 ];
