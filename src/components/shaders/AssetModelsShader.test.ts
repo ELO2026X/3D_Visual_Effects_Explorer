@@ -1,4 +1,4 @@
-import test, { describe, it } from 'node:test';
+import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import * as THREE from 'three';
 import { applyAssetModelsShader } from './AssetModelsShader.ts';

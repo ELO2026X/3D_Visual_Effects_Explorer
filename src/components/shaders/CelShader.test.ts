@@ -1,4 +1,4 @@
-import test, { describe, it } from 'node:test';
+import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import * as THREE from 'three';
 import { applyCelShader } from './CelShader.ts';
@@ -15,7 +15,7 @@ describe('applyCelShader', () => {
 
     // Verify toon material replacement
     assert.strictEqual(mesh.material instanceof THREE.MeshToonMaterial, true);
-    assert.strictEqual((mesh.material as THREE.MeshToonMaterial).color.getHex(), 0xff0000);
+    assert.strictEqual((mesh.material as unknown as THREE.MeshToonMaterial).color.getHex(), 0xff0000);
 
     // Verify outline mesh is added to parent
     const outlineMeshes = parent.children.filter((child) => child.name === 'outline');
@@ -59,7 +59,7 @@ describe('applyCelShader', () => {
     const initialChildrenCount = parent.children.length;
     assert.strictEqual(initialChildrenCount, 2); // mesh + outline
 
-    const toonMaterial = mesh.material as THREE.MeshToonMaterial;
+    const toonMaterial = mesh.material as unknown as THREE.MeshToonMaterial;
     const outlineMesh = parent.children.find(c => c.name === 'outline') as THREE.Mesh;
     const outlineMaterial = outlineMesh.material as THREE.MeshBasicMaterial;
 

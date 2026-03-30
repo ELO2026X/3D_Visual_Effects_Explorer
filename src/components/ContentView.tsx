@@ -1,7 +1,8 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stage } from '@react-three/drei';
 import { ModelViewer } from './ModelViewer';
+import { ShowcaseAnimator } from './ShowcaseAnimator';
 import { EffectData } from '../types';
 import { SpinnerIcon } from './icons/SpinnerIcon';
 
@@ -33,18 +34,35 @@ export const ContentView: React.FC<ContentViewProps> = ({
   selectedEffect,
   onUploadClick,
 }) => {
+  const [isShowcaseMode, setIsShowcaseMode] = useState(false);
+
   return (
     <div className="flex-1 flex flex-col p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">
           {effectData ? effectData.name : 'Select an Effect'}
         </h1>
-        <button
-          onClick={onUploadClick}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200"
-        >
-          Upload Custom Model
-        </button>
+        <div className="flex items-center gap-4">
+          <label className="flex items-center cursor-pointer">
+            <div className="relative">
+              <input
+                type="checkbox"
+                className="sr-only"
+                checked={isShowcaseMode}
+                onChange={() => setIsShowcaseMode(!isShowcaseMode)}
+              />
+              <div className={`block w-10 h-6 rounded-full transition-colors ${isShowcaseMode ? 'bg-blue-500' : 'bg-gray-600'}`}></div>
+              <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${isShowcaseMode ? 'transform translate-x-4' : ''}`}></div>
+            </div>
+            <span className="ml-3 text-white font-medium">Showcase Mode</span>
+          </label>
+          <button
+            onClick={onUploadClick}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200"
+          >
+            Upload Custom Model
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0">
@@ -60,7 +78,9 @@ export const ContentView: React.FC<ContentViewProps> = ({
               <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
               <pointLight position={[-10, -10, -10]} />
               <Stage environment="city" intensity={0.6}>
-                <ModelViewer modelPath={modelUrl} effectName={selectedEffect} />
+                <ShowcaseAnimator isEnabled={isShowcaseMode}>
+                  <ModelViewer modelPath={modelUrl} effectName={selectedEffect} />
+                </ShowcaseAnimator>
               </Stage>
               <OrbitControls />
             </Canvas>
