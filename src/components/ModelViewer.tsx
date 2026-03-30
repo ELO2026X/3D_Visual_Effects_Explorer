@@ -41,17 +41,13 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
         cleanupRef.current = null;
       }
 
-      // Reset materials to original before applying new effects
+      // Reset materials to original and identify objects to remove before applying new effects
+      const toRemove: THREE.Object3D[] = [];
       modelRef.current.traverse((child) => {
         if (child instanceof THREE.Mesh && originalMaterials.has(child.uuid)) {
           child.material = originalMaterials.get(child.uuid)!;
           child.visible = true; // Make sure the mesh is visible again
         }
-      });
-
-      // Remove previous outlines and points
-      const toRemove: THREE.Object3D[] = [];
-      modelRef.current.traverse((child) => {
         if (child.name === 'outline' || child.name === 'marble-points') {
           toRemove.push(child);
         }
