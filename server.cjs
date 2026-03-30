@@ -10,10 +10,10 @@ const port = 3001;
 app.use(cors());
 app.use(express.json());
 
-const API_KEY = process.env.VITE_GEMINI_API_KEY;
+const API_KEY = process.env.GEMINI_API_KEY;
 
 if (!API_KEY || API_KEY === "INSERT API KEY") {
-  console.warn("WARNING: VITE_GEMINI_API_KEY is not configured. AI descriptions will be disabled.");
+  console.warn("WARNING: GEMINI_API_KEY is not configured. AI descriptions will be disabled.");
 }
 
 const genAI = (API_KEY && API_KEY !== "INSERT API KEY") ? new GoogleGenerativeAI(API_KEY) : null;
