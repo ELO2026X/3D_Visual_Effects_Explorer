@@ -27,7 +27,7 @@ describe('generateEffectDescription', () => {
     };
 
     const originalFetch = global.fetch;
-    global.fetch = async () => mockResponse as any;
+    global.fetch = async () => mockResponse as unknown as Response;
 
     try {
       await assert.rejects(
