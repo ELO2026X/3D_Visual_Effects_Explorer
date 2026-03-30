@@ -1,12 +1,15 @@
 import * as THREE from 'three';
 
 export const applyMarbleShader = (model: THREE.Object3D) => {
-  const pointsObjects: THREE.Points[] = [];
+  const pointsObjects: { points: THREE.Points; parent: THREE.Object3D }[] = [];
+  const materials: THREE.Material[] = [];
+  const modifiedMeshes: THREE.Mesh[] = [];
 
   model.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       // Hide the original mesh
       child.visible = false;
+      modifiedMeshes.push(child);
 
       // Create points based on the mesh geometry
       const geometry = child.geometry;
@@ -15,6 +18,7 @@ export const applyMarbleShader = (model: THREE.Object3D) => {
         size: 0.05,
         sizeAttenuation: true,
       });
+      materials.push(material);
 
       const points = new THREE.Points(geometry, material);
       points.position.copy(child.position);
@@ -27,12 +31,18 @@ export const applyMarbleShader = (model: THREE.Object3D) => {
       // Add the point cloud to the same parent as the original mesh to inherit transforms
       if (child.parent) {
         child.parent.add(points);
-      } else {
-        pointsObjects.push(points);
+        pointsObjects.push({ points, parent: child.parent });
       }
     }
   });
 
-  // Add the new point clouds to the model root only if they didn't have a parent
-  pointsObjects.forEach(points => model.add(points));
+  return () => {
+    pointsObjects.forEach(({ points, parent }) => {
+      parent.remove(points);
+    });
+    modifiedMeshes.forEach(mesh => {
+      mesh.visible = true;
+    });
+    materials.forEach(material => material.dispose());
+  };
 };
