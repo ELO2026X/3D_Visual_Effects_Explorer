@@ -63,13 +63,13 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
           cleanupRef.current = applyJellyShader(modelRef.current);
           break;
         case 'Rosie (Vibe Coding)':
-          applyRosieShader(modelRef.current);
+          cleanupRef.current = applyRosieShader(modelRef.current);
           break;
         case 'Marble (Spatial Intelligence)':
-          applyMarbleShader(modelRef.current);
+          cleanupRef.current = applyMarbleShader(modelRef.current);
           break;
         case 'Asset Models (PixelVibe)':
-          applyAssetModelsShader(modelRef.current);
+          cleanupRef.current = applyAssetModelsShader(modelRef.current);
           break;
         // Add more cases for other effects
         default:
