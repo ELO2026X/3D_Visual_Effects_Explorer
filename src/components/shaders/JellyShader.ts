@@ -29,9 +29,17 @@ const JellyMaterial = shaderMaterial(
 
 extend({ JellyMaterial });
 
+interface JellyMaterialInstance extends THREE.ShaderMaterial {
+  uniforms: {
+    time: { value: number };
+    color: { value: THREE.Color };
+  };
+}
+
+const JellyMaterialConstructor = JellyMaterial as unknown as new () => JellyMaterialInstance;
+
 export const applyJellyShader = (model: THREE.Object3D) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const material = new (JellyMaterial as any)();
+  const material = new JellyMaterialConstructor();
   model.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       child.material = material;
