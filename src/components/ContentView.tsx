@@ -16,9 +16,11 @@ interface ContentViewProps {
 }
 
 const FormattedDescription: React.FC<{ description: string }> = ({ description }) => {
+  const paragraphs = React.useMemo(() => description.split('\n'), [description]);
+
   return (
     <div className="prose prose-invert max-w-none">
-      {description.split('\n').map((paragraph, index) => (
+      {paragraphs.map((paragraph, index) => (
         <p key={index} className="mb-2 last:mb-0">{paragraph}</p>
       ))}
     </div>

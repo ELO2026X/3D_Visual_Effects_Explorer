@@ -1,4 +1,4 @@
-import test, { describe, it } from 'node:test';
+import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { generateEffectDescription } from './geminiService.ts';
 
@@ -27,7 +27,7 @@ describe('generateEffectDescription', () => {
     };
 
     const originalFetch = global.fetch;
-    global.fetch = async () => mockResponse as any;
+    global.fetch = async () => mockResponse as unknown as Response;
 
     try {
       await assert.rejects(
