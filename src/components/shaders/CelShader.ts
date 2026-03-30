@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export const applyCelShader = (model: THREE.Object3D) => {
-  const outlineMeshes: THREE.Mesh[] = [];
+  const outlineMeshes: { mesh: THREE.Mesh; parent: THREE.Object3D }[] = [];
   const createdMaterials: THREE.Material[] = [];
 
   model.traverse((child) => {
@@ -18,16 +18,19 @@ export const applyCelShader = (model: THREE.Object3D) => {
       outlineMesh.scale.copy(child.scale).multiplyScalar(1.05);
       outlineMesh.position.copy(child.position);
       outlineMesh.quaternion.copy(child.quaternion);
-      outlineMeshes.push(outlineMesh);
+
+      if (child.parent) {
+        outlineMeshes.push({ mesh: outlineMesh, parent: child.parent });
+      }
       createdMaterials.push(outlineMaterial);
     }
   });
 
-  outlineMeshes.forEach((mesh) => model.add(mesh));
+  outlineMeshes.forEach(({ mesh, parent }) => parent.add(mesh));
 
   return () => {
-    outlineMeshes.forEach((mesh) => {
-      model.remove(mesh);
+    outlineMeshes.forEach(({ mesh, parent }) => {
+      parent.remove(mesh);
     });
     createdMaterials.forEach((material) => material.dispose());
   };
