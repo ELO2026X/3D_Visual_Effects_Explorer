@@ -16,13 +16,17 @@ function App() {
   useEffect(() => {
     // Set initial selected effect to the first effect in the first category
     if (effectCategories.length > 0 && effectCategories[0].effects.length > 0) {
-      setSelectedEffect(effectCategories[0].effects[0].name);
+      const initialEffect = effectCategories[0].effects[0].name;
+      console.log(`[App] Initializing with effect: ${initialEffect}`);
+      setSelectedEffect(initialEffect);
     }
   }, []);
 
   const fetchEffectData = useCallback(async (effectName: string) => {
+    console.log(`[App] Requesting data for effect: ${effectName}`);
     setError(null);
     if (cache.current.has(effectName)) {
+      console.log(`[App] Using cached description for: ${effectName}`);
       setEffectData({ name: effectName, description: cache.current.get(effectName)! });
       return;
     }
@@ -30,10 +34,11 @@ function App() {
     setIsLoading(true);
     try {
       const description = await generateEffectDescription(effectName);
+      console.log(`[App] Successfully fetched description for: ${effectName}`);
       cache.current.set(effectName, description);
       setEffectData({ name: effectName, description });
     } catch (err) {
-      console.error("Error fetching effect description:", err);
+      console.error(`[App] Error fetching description for ${effectName}:`, err);
       setError("Failed to load effect description.");
     } finally {
       setIsLoading(false);
@@ -49,12 +54,14 @@ function App() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
+      console.log(`[App] New model file selected: ${file.name} (${file.size} bytes)`);
       const url = URL.createObjectURL(file);
       setModelUrl(url);
     }
   };
 
   const handleUploadClick = () => {
+    console.log("[App] Triggering custom model upload");
     document.getElementById('model-upload-input')?.click();
   };
 

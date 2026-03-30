@@ -19,6 +19,10 @@ interface ModelViewerProps {
 export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName }) => {
   const isSplat = modelPath.toLowerCase().endsWith('.splat') || modelPath.toLowerCase().endsWith('.ksplat');
   
+  useEffect(() => {
+    console.log(`[ModelViewer] Path changed: ${modelPath} (isSplat: ${isSplat})`);
+  }, [modelPath, isSplat]);
+
   // Conditionally load GLTF only if not a splat
   const gltf = useGLTF(isSplat ? '' : modelPath, true);
   const scene = gltf ? gltf.scene : null;
@@ -27,23 +31,36 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
   const [originalMaterials, setOriginalMaterials] = useState<Map<string, THREE.Material>>(new Map());
   const cleanupRef = useRef<(() => void) | null>(null);
 
-  const memoizedScene = useMemo(() => scene ? scene.clone() : null, [scene]);
+  const memoizedScene = useMemo(() => {
+    if (scene) {
+      console.log("[ModelViewer] Cloning GLTF scene for memoization");
+      return scene.clone();
+    }
+    return null;
+  }, [scene]);
 
   useEffect(() => {
     if (!memoizedScene) return;
+    console.log("[ModelViewer] Extracting original materials from scene");
     const materials = new Map<string, THREE.Material>();
+    let meshCount = 0;
     memoizedScene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         materials.set(child.uuid, child.material);
+        meshCount++;
       }
     });
+    console.log(`[ModelViewer] Successfully cached ${meshCount} materials`);
     setOriginalMaterials(materials);
   }, [memoizedScene]);
 
   useEffect(() => {
     if (modelRef.current && memoizedScene) {
+      console.log(`[ModelViewer] Applying effect: ${effectName || 'Default'}`);
+      
       // Cleanup previous effect
       if (cleanupRef.current) {
+        console.log(`[ModelViewer] Cleaning up previous effect`);
         cleanupRef.current();
         cleanupRef.current = null;
       }
@@ -59,7 +76,11 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
           toRemove.push(child);
         }
       });
-      toRemove.forEach((obj) => obj.parent?.remove(obj));
+      
+      if (toRemove.length > 0) {
+        console.log(`[ModelViewer] Removing ${toRemove.length} legacy effect artifacts`);
+        toRemove.forEach((obj) => obj.parent?.remove(obj));
+      }
 
       switch (effectName) {
         case 'Cel Shading':
@@ -89,9 +110,8 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
         case 'Enhanced Detail':
           cleanupRef.current = applyEnhancedDetailShader(modelRef.current);
           break;
-        // Add more cases for other effects
         default:
-          // No specific effect, use default materials
+          console.log("[ModelViewer] No effect selected, using default materials");
           break;
       }
     }
@@ -99,12 +119,14 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, effectName 
     // Cleanup on component unmount
     return () => {
       if (cleanupRef.current) {
+        console.log("[ModelViewer] Component unmounting, cleaning up current effect");
         cleanupRef.current();
       }
     };
   }, [effectName, memoizedScene, originalMaterials]);
 
   if (isSplat) {
+    console.log("[ModelViewer] Rendering Gaussian Splat component");
     return <Splat src={modelPath} />;
   }
 
