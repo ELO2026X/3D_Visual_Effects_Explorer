@@ -45,7 +45,7 @@ export const ContentView: React.FC<ContentViewProps> = ({
           {isLoading && <span className="text-xs text-blue-400 animate-pulse font-mono uppercase tracking-widest">System Processing...</span>}
           <button
             onClick={onUploadClick}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200 shadow-lg shadow-blue-500/20"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200 shadow-lg shadow-blue-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900"
           >
             Upload Custom Model
           </button>
