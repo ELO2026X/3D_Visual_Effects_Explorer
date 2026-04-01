@@ -1,22 +1,36 @@
 
+interface MockMaterial {
+  uuid: string;
+}
+
+interface MockObject3D {
+  uuid?: string;
+  name?: string;
+  material?: MockMaterial;
+  visible?: boolean;
+  parent?: MockObject3D;
+  children?: MockObject3D[];
+  traverse?: (callback: (obj: MockObject3D) => void) => void;
+}
+
 function createLargeScene(count: number) {
-  const allObjects: any[] = [];
-  const scene: any = { children: [] };
+  const allObjects: MockObject3D[] = [];
+  const scene: MockObject3D = { children: [] };
   allObjects.push(scene);
 
   for (let i = 0; i < count; i++) {
-    const mesh: any = {
+    const mesh: MockObject3D = {
       uuid: `uuid-${i}`,
       name: i % 10 === 0 ? (i % 20 === 0 ? 'outline' : 'marble-points') : `mesh-${i}`,
       material: { uuid: `mat-uuid-${i}` },
       visible: true,
       parent: scene
     };
-    scene.children.push(mesh);
+    scene.children!.push(mesh);
     allObjects.push(mesh);
   }
 
-  scene.traverse = function(callback: (obj: any) => void) {
+  scene.traverse = function(callback: (obj: MockObject3D) => void) {
     for (let i = 0; i < allObjects.length; i++) {
         callback(allObjects[i]);
     }
@@ -26,18 +40,18 @@ function createLargeScene(count: number) {
 }
 
 const scene = createLargeScene(10000);
-const originalMaterials = new Map<string, any>();
-scene.traverse((child: any) => {
+const originalMaterials = new Map<string, MockMaterial>();
+scene.traverse!((child: MockObject3D) => {
   if (child.uuid && child.material) {
     originalMaterials.set(child.uuid, child.material);
   }
 });
 
-function benchmarkTwoTraversals(model: any, materials: Map<string, any>) {
+function benchmarkTwoTraversals(model: MockObject3D, materials: Map<string, MockMaterial>) {
   const start = performance.now();
 
   // Reset materials
-  model.traverse((child: any) => {
+  model.traverse!((child: MockObject3D) => {
     if (child.uuid && materials.has(child.uuid)) {
       child.material = materials.get(child.uuid)!;
       child.visible = true;
@@ -45,8 +59,8 @@ function benchmarkTwoTraversals(model: any, materials: Map<string, any>) {
   });
 
   // Remove previous outlines and points
-  const toRemove: any[] = [];
-  model.traverse((child: any) => {
+  const toRemove: MockObject3D[] = [];
+  model.traverse!((child: MockObject3D) => {
     if (child.name === 'outline' || child.name === 'marble-points') {
       toRemove.push(child);
     }
@@ -56,11 +70,11 @@ function benchmarkTwoTraversals(model: any, materials: Map<string, any>) {
   return end - start;
 }
 
-function benchmarkOneTraversal(model: any, materials: Map<string, any>) {
+function benchmarkOneTraversal(model: MockObject3D, materials: Map<string, MockMaterial>) {
   const start = performance.now();
 
-  const toRemove: any[] = [];
-  model.traverse((child: any) => {
+  const toRemove: MockObject3D[] = [];
+  model.traverse!((child: MockObject3D) => {
     if (child.uuid && materials.has(child.uuid)) {
       child.material = materials.get(child.uuid)!;
       child.visible = true;

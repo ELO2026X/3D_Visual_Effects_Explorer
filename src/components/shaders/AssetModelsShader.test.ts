@@ -1,4 +1,4 @@
-import test, { describe, it } from 'node:test';
+import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import * as THREE from 'three';
 import { applyAssetModelsShader } from './AssetModelsShader.ts';
@@ -41,10 +41,10 @@ describe('applyAssetModelsShader', () => {
     const group = new THREE.Group();
     const mesh1 = new THREE.Mesh();
     const mesh2 = new THREE.Mesh();
-    group.add(mesh1 as any);
-    group.add(mesh2 as any);
+    group.add(mesh1);
+    group.add(mesh2);
 
-    applyAssetModelsShader(group as THREE.Object3D);
+    applyAssetModelsShader(group);
 
     assert.ok(mesh1.material instanceof THREE.MeshStandardMaterial);
     assert.ok(mesh2.material instanceof THREE.MeshStandardMaterial);
@@ -53,9 +53,9 @@ describe('applyAssetModelsShader', () => {
   it('should not affect non-mesh objects', () => {
     const light = new THREE.PointLight();
     const group = new THREE.Group();
-    group.add(light as any);
+    group.add(light);
 
-    applyAssetModelsShader(group as THREE.Object3D);
+    applyAssetModelsShader(group);
 
     assert.ok(group.children[0] instanceof THREE.PointLight);
   });

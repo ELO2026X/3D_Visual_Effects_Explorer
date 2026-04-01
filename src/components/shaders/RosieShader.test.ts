@@ -1,4 +1,4 @@
-import test, { describe, it } from 'node:test';
+import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import * as THREE from 'three';
 import { applyRosieShader } from './RosieShader.ts';
@@ -36,6 +36,6 @@ describe('applyRosieShader', () => {
     assert.strictEqual(mat2.opacity, 0.8);
 
     // Verify non-meshes are not affected (light has no material)
-    assert.strictEqual((light as any).material, undefined);
+    assert.strictEqual((light as unknown as THREE.Mesh).material, undefined);
   });
 });
