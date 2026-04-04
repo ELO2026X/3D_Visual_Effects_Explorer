@@ -25,13 +25,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
               {category.effects.map((effect) => (
                 <li key={effect.name}>
                   <button
-                    className={`w-full text-left p-2 rounded-md transition-colors duration-200
+                    className={`w-full text-left p-2 rounded-md transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400
                       ${selectedEffect === effect.name
                         ? 'bg-blue-600 hover:bg-blue-700'
                         : 'hover:bg-gray-700'
                       }`}
                     onClick={() => onSelectEffect(effect.name)}
                     disabled={isLoading}
+                    aria-current={selectedEffect === effect.name ? 'true' : 'false'}
                   >
                     {effect.name}
                   </button>
