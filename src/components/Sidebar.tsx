@@ -15,7 +15,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isLoading,
 }) => {
   return (
-    <div className="w-64 bg-gray-800 p-4 overflow-y-auto">
+    <nav aria-label="Effects navigation" className="w-64 bg-gray-800 p-4 overflow-y-auto">
       <h2 className="text-xl font-bold mb-4">Effects Explorer</h2>
       <div className="space-y-4">
         {effectCategories.map((category) => (
@@ -25,13 +25,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
               {category.effects.map((effect) => (
                 <li key={effect.name}>
                   <button
-                    className={`w-full text-left p-2 rounded-md transition-colors duration-200
+                    className={`w-full text-left p-2 rounded-md transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400
                       ${selectedEffect === effect.name
                         ? 'bg-blue-600 hover:bg-blue-700'
                         : 'hover:bg-gray-700'
                       }`}
                     onClick={() => onSelectEffect(effect.name)}
                     disabled={isLoading}
+                    aria-pressed={selectedEffect === effect.name}
                   >
                     {effect.name}
                   </button>
@@ -41,6 +42,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         ))}
       </div>
-    </div>
+    </nav>
   );
 };
