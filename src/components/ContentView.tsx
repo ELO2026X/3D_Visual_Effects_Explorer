@@ -42,10 +42,10 @@ export const ContentView: React.FC<ContentViewProps> = ({
           {effectData ? effectData.name : 'Select an Effect'}
         </h1>
         <div className="flex items-center gap-3">
-          {isLoading && <span className="text-xs text-blue-400 animate-pulse font-mono uppercase tracking-widest">System Processing...</span>}
+          {isLoading && <span aria-live="polite" className="text-xs text-blue-400 animate-pulse font-mono uppercase tracking-widest">System Processing...</span>}
           <button
             onClick={onUploadClick}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200 shadow-lg shadow-blue-500/20"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200 shadow-lg shadow-blue-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
           >
             Upload Custom Model
           </button>
@@ -81,12 +81,12 @@ export const ContentView: React.FC<ContentViewProps> = ({
             Effect Intelligence
           </h2>
           {isLoading ? (
-            <div className="text-white flex flex-col items-center py-8">
+            <div aria-live="polite" className="text-white flex flex-col items-center py-8">
               <SpinnerIcon className="animate-spin h-6 w-6 text-blue-400" />
               <p className="mt-2 text-sm text-gray-400 font-mono">Synthesizing description...</p>
             </div>
           ) : error ? (
-            <div className="text-red-400 p-4 bg-red-900/20 rounded-md border border-red-800/50">
+            <div aria-live="polite" className="text-red-400 p-4 bg-red-900/20 rounded-md border border-red-800/50">
               <p className="font-bold uppercase text-xs mb-1 tracking-wider">Interface Warning</p>
               <p className="text-sm opacity-90">{error}</p>
               <p className="text-xs mt-3 pt-3 border-t border-red-800/30 italic text-gray-500">
