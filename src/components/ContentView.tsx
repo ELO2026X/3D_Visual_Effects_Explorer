@@ -42,10 +42,10 @@ export const ContentView: React.FC<ContentViewProps> = ({
           {effectData ? effectData.name : 'Select an Effect'}
         </h1>
         <div className="flex items-center gap-3">
-          {isLoading && <span className="text-xs text-blue-400 animate-pulse font-mono uppercase tracking-widest">System Processing...</span>}
+          {isLoading && <span aria-live="polite" className="text-xs text-blue-400 animate-pulse font-mono uppercase tracking-widest">System Processing...</span>}
           <button
             onClick={onUploadClick}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200 shadow-lg shadow-blue-500/20"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200 shadow-lg shadow-blue-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
           >
             Upload Custom Model
           </button>
@@ -55,7 +55,7 @@ export const ContentView: React.FC<ContentViewProps> = ({
       <div className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0">
         <div className="flex-1 bg-gray-700 rounded-lg relative flex items-center justify-center border border-gray-600">
           <Suspense fallback={
-            <div className="text-white flex flex-col items-center">
+            <div aria-live="polite" className="text-white flex flex-col items-center">
               <SpinnerIcon className="animate-spin h-8 w-8 text-white" />
               <p className="mt-2 font-mono text-sm opacity-70">Initializing 3D Pipeline...</p>
             </div>
@@ -81,7 +81,7 @@ export const ContentView: React.FC<ContentViewProps> = ({
             Effect Intelligence
           </h2>
           {isLoading ? (
-            <div className="text-white flex flex-col items-center py-8">
+            <div aria-live="polite" className="text-white flex flex-col items-center py-8">
               <SpinnerIcon className="animate-spin h-6 w-6 text-blue-400" />
               <p className="mt-2 text-sm text-gray-400 font-mono">Synthesizing description...</p>
             </div>
