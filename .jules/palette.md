@@ -1,0 +1,3 @@
+## 2024-05-14 - Semantic and Visual State Synchronization
+**Learning:** For interactive sidebar effect toggles in a dashboard architecture, relying solely on `disabled` HTML attributes during loading creates an accessibility gap. Screen readers need `aria-live="polite"` on the corresponding loading indicators to understand *why* interactions are frozen, and sighted keyboard users need explicit `focus-visible` states to not lose their place while elements are disabled.
+**Action:** When implementing custom interactive lists or sidebars, always ensure semantic states (`aria-current`, `aria-live` on status text) perfectly mirror visual states (focus rings, disabled opacity) to provide a unified experience across all interaction modes.
