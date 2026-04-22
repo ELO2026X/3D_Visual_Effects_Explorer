@@ -1,22 +1,37 @@
 
-function createLargeScene(count: number) {
-  const allObjects: any[] = [];
-  const scene: any = { children: [] };
+// benchmark_traversal.ts
+interface MaterialMock {
+  uuid: string;
+}
+
+interface SceneObject {
+  uuid?: string;
+  name?: string;
+  material?: MaterialMock;
+  visible?: boolean;
+  parent?: SceneObject;
+  children?: SceneObject[];
+  traverse?: (callback: (obj: SceneObject) => void) => void;
+}
+
+function createLargeScene(count: number): SceneObject {
+  const allObjects: SceneObject[] = [];
+  const scene: SceneObject = { children: [] };
   allObjects.push(scene);
 
   for (let i = 0; i < count; i++) {
-    const mesh: any = {
+    const mesh: SceneObject = {
       uuid: `uuid-${i}`,
       name: i % 10 === 0 ? (i % 20 === 0 ? 'outline' : 'marble-points') : `mesh-${i}`,
       material: { uuid: `mat-uuid-${i}` },
       visible: true,
       parent: scene
     };
-    scene.children.push(mesh);
+    scene.children!.push(mesh);
     allObjects.push(mesh);
   }
 
-  scene.traverse = function(callback: (obj: any) => void) {
+  scene.traverse = function(callback: (obj: SceneObject) => void) {
     for (let i = 0; i < allObjects.length; i++) {
         callback(allObjects[i]);
     }
@@ -26,18 +41,18 @@ function createLargeScene(count: number) {
 }
 
 const scene = createLargeScene(10000);
-const originalMaterials = new Map<string, any>();
-scene.traverse((child: any) => {
+const originalMaterials = new Map<string, MaterialMock>();
+scene.traverse!((child: SceneObject) => {
   if (child.uuid && child.material) {
     originalMaterials.set(child.uuid, child.material);
   }
 });
 
-function benchmarkTwoTraversals(model: any, materials: Map<string, any>) {
+function benchmarkTwoTraversals(model: SceneObject, materials: Map<string, MaterialMock>) {
   const start = performance.now();
 
   // Reset materials
-  model.traverse((child: any) => {
+  model.traverse!((child: SceneObject) => {
     if (child.uuid && materials.has(child.uuid)) {
       child.material = materials.get(child.uuid)!;
       child.visible = true;
@@ -45,8 +60,8 @@ function benchmarkTwoTraversals(model: any, materials: Map<string, any>) {
   });
 
   // Remove previous outlines and points
-  const toRemove: any[] = [];
-  model.traverse((child: any) => {
+  const toRemove: SceneObject[] = [];
+  model.traverse!((child: SceneObject) => {
     if (child.name === 'outline' || child.name === 'marble-points') {
       toRemove.push(child);
     }
@@ -56,11 +71,11 @@ function benchmarkTwoTraversals(model: any, materials: Map<string, any>) {
   return end - start;
 }
 
-function benchmarkOneTraversal(model: any, materials: Map<string, any>) {
+function benchmarkOneTraversal(model: SceneObject, materials: Map<string, MaterialMock>) {
   const start = performance.now();
 
-  const toRemove: any[] = [];
-  model.traverse((child: any) => {
+  const toRemove: SceneObject[] = [];
+  model.traverse!((child: SceneObject) => {
     if (child.uuid && materials.has(child.uuid)) {
       child.material = materials.get(child.uuid)!;
       child.visible = true;
