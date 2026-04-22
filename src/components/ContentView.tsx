@@ -4,6 +4,7 @@ import { OrbitControls, Stage } from '@react-three/drei';
 import { ModelViewer } from './ModelViewer';
 import { EffectData } from '../types';
 import { SpinnerIcon } from './icons/SpinnerIcon';
+import { UploadIcon } from './icons/UploadIcon';
 
 interface ContentViewProps {
   effectData: EffectData | null;
@@ -36,7 +37,7 @@ export const ContentView: React.FC<ContentViewProps> = ({
   console.log(`[ContentView] Rendering effect: ${selectedEffect || 'None'}, isLoading: ${isLoading}`);
 
   return (
-    <div className="flex-1 flex flex-col p-4">
+    <main id="main-content" className="flex-1 flex flex-col p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">
           {effectData ? effectData.name : 'Select an Effect'}
@@ -45,8 +46,9 @@ export const ContentView: React.FC<ContentViewProps> = ({
           {isLoading && <span aria-live="polite" className="text-xs text-blue-400 animate-pulse font-mono uppercase tracking-widest">System Processing...</span>}
           <button
             onClick={onUploadClick}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200 shadow-lg shadow-blue-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200 shadow-lg shadow-blue-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
           >
+            <UploadIcon className="w-5 h-5" aria-hidden="true" />
             Upload Custom Model
           </button>
         </div>
@@ -100,6 +102,6 @@ export const ContentView: React.FC<ContentViewProps> = ({
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 };
