@@ -55,7 +55,7 @@ export const ContentView: React.FC<ContentViewProps> = ({
       <div className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0">
         <div className="flex-1 bg-gray-700 rounded-lg relative flex items-center justify-center border border-gray-600">
           <Suspense fallback={
-            <div className="text-white flex flex-col items-center">
+            <div aria-live="polite" className="text-white flex flex-col items-center">
               <SpinnerIcon className="animate-spin h-8 w-8 text-white" />
               <p className="mt-2 font-mono text-sm opacity-70">Initializing 3D Pipeline...</p>
             </div>
