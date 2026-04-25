@@ -15,9 +15,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isLoading,
 }) => {
   return (
-    <div className="w-64 bg-gray-800 p-4 overflow-y-auto">
+    <aside className="w-64 bg-gray-800 p-4 overflow-y-auto">
       <h2 className="text-xl font-bold mb-4">Effects Explorer</h2>
-      <div className="space-y-4">
+      <nav aria-label="Effects Navigation" className="space-y-4">
         {effectCategories.map((category) => (
           <div key={category.name}>
             <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
@@ -41,7 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </ul>
           </div>
         ))}
-      </div>
-    </div>
+      </nav>
+    </aside>
   );
 };
