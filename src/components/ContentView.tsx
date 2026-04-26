@@ -36,7 +36,7 @@ export const ContentView: React.FC<ContentViewProps> = ({
   console.log(`[ContentView] Rendering effect: ${selectedEffect || 'None'}, isLoading: ${isLoading}`);
 
   return (
-    <div className="flex-1 flex flex-col p-4">
+    <main id="main-content" className="flex-1 flex flex-col p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">
           {effectData ? effectData.name : 'Select an Effect'}
@@ -100,6 +100,6 @@ export const ContentView: React.FC<ContentViewProps> = ({
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 };
