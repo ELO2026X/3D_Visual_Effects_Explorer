@@ -67,6 +67,9 @@ function App() {
 
   return (
     <div className="flex h-screen bg-gray-900 text-white">
+      <a href="#main-content" className="absolute -translate-y-[200%] focus:translate-y-0 top-4 left-4 z-50 bg-blue-600 text-white px-4 py-2 rounded-md transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+        Skip to main content
+      </a>
       <Sidebar
         effectCategories={effectCategories}
         selectedEffect={selectedEffect}
