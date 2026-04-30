@@ -67,6 +67,9 @@ function App() {
 
   return (
     <div className="flex h-screen bg-gray-900 text-white">
+      <a href="#main-content" className="sr-only focus-visible:not-sr-only focus-visible:absolute focus-visible:z-50 bg-blue-600 text-white p-4 m-2 rounded-md shadow-lg font-bold">
+        Skip to main content
+      </a>
       <Sidebar
         effectCategories={effectCategories}
         selectedEffect={selectedEffect}
@@ -85,7 +88,7 @@ function App() {
       <input
         id="model-upload-input"
         type="file"
-        accept=".glb,.gltf"
+        accept=".glb,.gltf,.splat,.ksplat"
         onChange={handleFileChange}
         className="hidden"
       />
