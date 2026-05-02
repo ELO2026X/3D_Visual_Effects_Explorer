@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 function createLargeScene(count: number) {
   const allObjects: any[] = [];
