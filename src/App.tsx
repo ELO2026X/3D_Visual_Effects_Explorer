@@ -67,6 +67,12 @@ function App() {
 
   return (
     <div className="flex h-screen bg-gray-900 text-white">
+      <a
+        href="#main-content"
+        className="sr-only focus-visible:not-sr-only focus-visible:absolute focus-visible:z-50 focus-visible:top-4 focus-visible:left-4 focus-visible:p-3 focus-visible:bg-blue-600 focus-visible:text-white focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+      >
+        Skip to main content
+      </a>
       <Sidebar
         effectCategories={effectCategories}
         selectedEffect={selectedEffect}
