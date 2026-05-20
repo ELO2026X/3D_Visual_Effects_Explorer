@@ -15,7 +15,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isLoading,
 }) => {
   return (
-    <div className="w-64 bg-gray-800 p-4 overflow-y-auto">
+    <nav aria-label="Sidebar navigation" className="w-64 bg-gray-800 p-4 overflow-y-auto">
       <h2 className="text-xl font-bold mb-4">Effects Explorer</h2>
       <div className="space-y-4">
         {effectCategories.map((category) => (
@@ -42,6 +42,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         ))}
       </div>
-    </div>
+    </nav>
   );
 };
