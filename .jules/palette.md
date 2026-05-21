@@ -1,3 +1,3 @@
-## 2026-04-21 - Added UI focus states and semantic accessibility
-**Learning:** In React apps, dynamically changing states like loading indicators need `aria-live="polite"` to ensure screen readers announce them properly without being overly disruptive. Focus states are also often overlooked in generic styles.
-**Action:** Always check for `aria-live` on loading components and `focus-visible` on interactive elements during UI audits.
+## 2024-03-24 - Skip to Main Content in 3D Apps
+**Learning:** Single Page Applications (SPAs) with complex sidebars or 3D viewports often lack standard structural landmarks, making keyboard navigation tedious. Without a "Skip to main content" link and semantic HTML (`<nav>`, `<main>`), keyboard users must tab through every single effect option before reaching the core 3D viewer interaction area.
+**Action:** Always implement a visually hidden "Skip to main content" link that targets a `<main>` container with `tabIndex={-1}` and `focus:outline-none`. Additionally, wrap sidebars in `<nav>` to clearly communicate application structure to screen readers.
