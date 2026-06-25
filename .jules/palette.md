@@ -1,3 +1,3 @@
-## 2026-04-21 - Added UI focus states and semantic accessibility
-**Learning:** In React apps, dynamically changing states like loading indicators need `aria-live="polite"` to ensure screen readers announce them properly without being overly disruptive. Focus states are also often overlooked in generic styles.
-**Action:** Always check for `aria-live` on loading components and `focus-visible` on interactive elements during UI audits.
+## 2025-06-25 - Skip to Main Content Implementation
+**Learning:** React 19 apps using Tailwind CSS require careful skip-link focus management. When targeting a main content area with an `id`, ensuring the target element has `tabIndex={-1}` is critical for programmatic focus, but combining it with `focus:outline-none` prevents an unsightly visual focus ring on the entire container when sighted keyboard users trigger it.
+**Action:** When adding skip links, always apply `tabIndex={-1}` and `focus:outline-none` to the target `<main>` container to ensure semantic keyboard navigation without visual degradation.
