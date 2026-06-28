@@ -1,3 +1,6 @@
 ## 2026-04-21 - Added UI focus states and semantic accessibility
 **Learning:** In React apps, dynamically changing states like loading indicators need `aria-live="polite"` to ensure screen readers announce them properly without being overly disruptive. Focus states are also often overlooked in generic styles.
 **Action:** Always check for `aria-live` on loading components and `focus-visible` on interactive elements during UI audits.
+## 2023-10-27 - Implementing "Skip to main content" links
+**Learning:** When implementing a 'Skip to main content' link, ensure the target container (e.g., `<main id="main-content">`) includes `tabIndex={-1}` and appropriate styling classes (e.g., `focus:outline-none`) to properly receive programmatic focus while maintaining correct keyboard navigation semantics. Applying Tailwind classes such as `sr-only focus-visible:not-sr-only focus-visible:absolute focus-visible:z-50` ensures the link remains visually hidden from sighted users until it receives keyboard focus.
+**Action:** Always add `tabIndex={-1}` and `focus:outline-none` to the target container of skip links, and use `sr-only` and `focus-visible` classes to hide them from sighted users until focused.
